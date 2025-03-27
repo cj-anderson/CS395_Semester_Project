@@ -12,7 +12,10 @@ pub mod weapon;
 pub mod shield;
 pub mod armor;
 
+pub mod shop;
+
 pub mod error;
+pub mod upgrade_error;
 
 pub mod prelude{
     pub use crate::entity::Entity;

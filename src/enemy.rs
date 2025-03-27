@@ -9,8 +9,6 @@ pub struct Enemy {
     pub hp: u32,
     pub atk: u32,
     pub def: u32,
-    pub mag_atk: u32,
-    pub mag_def: u32,
     pub exp_given: u32,
 }
 
@@ -23,8 +21,6 @@ impl Enemy {
             hp: 10u32,
             atk: 5u32,
             def: 5u32,
-            mag_atk: 5u32,
-            mag_def: 5u32,
             exp_given: 10u32,
         }
     }
@@ -36,8 +32,6 @@ impl Enemy {
             hp: 10u32,
             atk: 5u32,
             def: 5u32,
-            mag_atk: 5u32,
-            mag_def: 5u32,
             exp_given: 10u32,
         }
     }
@@ -63,13 +57,5 @@ impl Entity for Enemy {
 
     fn def(&self) -> u32 {
         self.def
-    }
-
-    fn atk_mag(&self) -> u32 {
-        self.mag_atk
-    }
-
-    fn def_mag(&self) -> u32 {
-        self.mag_def
     }
 }

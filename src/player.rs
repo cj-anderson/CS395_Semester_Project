@@ -1,8 +1,5 @@
-use crate::entity::Entity;
+use crate::{shop::Shop, upgrade_error, armor::Armor, equipment::Equipment, shield::Shield, weapon::Weapon};
 
-#[derive(Debug)]
-
-/// Define a PLayer.
 pub struct Player {
     pub name: String,
     pub level: u32,
@@ -11,19 +8,15 @@ pub struct Player {
     pub hp: u32,
     pub atk: u32,
     pub def: u32,
-    pub mag_atk: u32,
-    pub mag_def: u32,
+    pub gold: u32,
 
-    //Equipment for a Player. (to be implemented.)
-    // pub weapon: Weapon;
-    // pub shield: Shield;
-    // pub armor: Armor;
-    // pub items: Inventory;
-    // pub money: u32;
+    // Equipment for the player, as an enum to handle all equipment types
+    pub weapon: Equipment,
+    pub shield: Equipment,
+    pub armor: Equipment,
 }
 
 impl Player {
-    ///Create a default player.
     pub fn new() -> Self {
         Player {
             name: String::from("John Doe"),
@@ -33,52 +26,40 @@ impl Player {
             hp: 20u32,
             atk: 5u32,
             def: 5u32,
-            mag_atk: 5u32,
-            mag_def: 5u32,
+            gold: 100u32, // Starting gold
+            weapon: Equipment::Weapon(Weapon::new("Iron Sword", 10, 1)),
+            shield: Equipment::Shield(Shield::new("Wooden Shield", 3)),
+            armor: Equipment::Armor(Armor::new("Leather Armor", 5)),
         }
     }
 
-    pub fn with_name(n: &str) -> Self {
-        Player {
-            name: n.to_string(),
-            level: 1u32,
-            exp: 0u32,
-            max_hp: 20u32,
-            hp: 20u32,
-            atk: 5u32,
-            def: 5u32,
-            mag_atk: 5u32,
-            mag_def: 5u32,
-        }
-    }
-}
+    pub fn upgrade_weapon(&mut self, shop: &Shop, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
+        let mut player_gold = self.gold;
+        shop.upgrade_item(&mut self.weapon, &mut player_gold, upgrade_cost)?;
 
-impl Entity for Player { 
-    fn name(&self) -> &String {
-        &self.name
+        // Update the player's gold after the upgrade
+        self.gold = player_gold;
+
+        Ok(())
     }
 
-    fn max_hp(&self) -> u32 {
-        self.max_hp 
+    pub fn upgrade_armor(&mut self, shop: &Shop, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
+        let mut player_gold = self.gold;
+        shop.upgrade_item(&mut self.armor, &mut player_gold, upgrade_cost)?;
+
+        // Update the player's gold after the upgrade
+        self.gold = player_gold;
+
+        Ok(())
     }
 
-    fn hp(&self) -> u32 {
-        self.hp
-    }
+    pub fn upgrade_shield(&mut self, shop: &Shop, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
+        let mut player_gold = self.gold;
+        shop.upgrade_item(&mut self.shield, &mut player_gold, upgrade_cost)?;
 
-    fn atk(&self) -> u32 {
-        self.atk
-    }
+        // Update the player's gold after the upgrade
+        self.gold = player_gold;
 
-    fn def(&self) -> u32 {
-        self.def
-    }
-
-    fn atk_mag(&self) -> u32 {
-        self.mag_atk
-    }
-
-    fn def_mag(&self) -> u32 {
-        self.mag_def
+        Ok(())
     }
 }

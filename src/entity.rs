@@ -10,8 +10,6 @@ pub trait Entity{
     fn hp(&self) -> u32;
     fn atk(&self) -> u32;
     fn def(&self) -> u32;
-    fn atk_mag(&self) -> u32;
-    fn def_mag(&self) -> u32;
 
     //take actions on turn
     //to be added
