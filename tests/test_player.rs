@@ -1,4 +1,7 @@
 use cs395_project::{player:: Player, upgrade_error::UpgradeError};
+
+use std::fs;
+
 #[cfg(test)]
 use hamcrest2::prelude::*;
 use rstest::*;
@@ -22,6 +25,29 @@ fn test_player_creation(a_player: Player) {
     assert_eq!(a_player.weapon.name, "Iron Sword");
     assert_eq!(a_player.shield.name, "Wooden Shield");
     assert_eq!(a_player.armor.name, "Cloth Armor");
+}
+
+#[rstest]
+fn test_level_up() {
+    let mut player = Player::new("TestHero");
+
+    // Simulate gaining enough XP for two levels
+    player.exp = 10; // Level up once
+    player.level_up();
+    assert_eq!(player.level, 2);
+    assert_eq!(player.exp, 0);
+    assert_eq!(player.exp_to_lv_up, 15); // 10 * 1.5 = 15
+
+    player.exp = 15; // Level up again
+    player.level_up();
+    assert_eq!(player.level, 3);
+    assert_eq!(player.exp, 0);
+    assert_eq!(player.exp_to_lv_up, 22); // 15 * 1.5 = 22 (rounded down)
+
+    // Verify stat increases
+    assert_eq!(player.max_hp, 30); // +5 per level-up
+    assert_eq!(player.atk, 9); // +2 per level-up
+    assert_eq!(player.def, 9); // +2 per level-up
 }
 
 #[rstest]
@@ -84,3 +110,19 @@ fn test_shield_upgrade_fail_insufficient_gold() {
     assert_eq!(player.gold, 100); // Gold should not be deducted
 }
 
+#[rstest]
+fn test_save_and_load_player() {
+    let player = Player::new("Tom");
+    
+
+    let test_filename = "test_player.json";
+
+    assert!(player.save_to_file(test_filename).is_ok());
+
+    let loaded_player = Player::load_from_file(test_filename).expect("Failed to load player");
+
+    assert_eq!(player.name, loaded_player.name);
+    assert_eq!(player.level, loaded_player.level);
+
+    fs::remove_file(test_filename).expect("Failed to delete test file");
+}

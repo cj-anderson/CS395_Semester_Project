@@ -1,6 +1,10 @@
 use crate::{player::Player, upgrade_error::UpgradeError};
 
-#[derive(Debug, Clone)]
+use serde::{Serialize, Deserialize};
+use std::fs;
+use std::io::{self, Write};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Shield {
     pub name: String,
     pub level: u32,
