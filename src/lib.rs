@@ -19,5 +19,4 @@ pub mod upgrade_error;
 
 pub mod prelude{
     pub use crate::entity::Entity;
-    pub use crate::equipment::Equipment;
 }

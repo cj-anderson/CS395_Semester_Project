@@ -1,40 +1,173 @@
 use cs395_project::{player::Player, shop::Shop};
 
 fn main() {
-    // Create a new player
-    let mut player = Player::new();
+    // Create a new player with a custom name
+    let mut player = Player::new("Arthur");
+
+    // Create a shop instance
     let shop = Shop;
 
-    println!("Player's starting gold: {}", player.gold);
+    player.gold= 999999;
+
+    // Display initial player and weapon stats
+    println!("Player: {}", player.name);
+    println!("Gold: {}", player.gold);
+    println!("Before upgrade: {:?}", player.weapon);
+
+    // Get the upgrade cost
+    let cost = Shop::get_wpn_upgrade_cost(&player.weapon);
+    println!("Upgrade cost: {}", cost);
 
     // Attempt to upgrade the weapon
-    let upgrade_cost = 20;  // Define a cost for upgrading the weapon
-    if let Err(e) = player.upgrade_weapon(&shop, upgrade_cost) {
-        println!("Upgrade failed: {:?}", e);
-    } else {
-        println!("Weapon upgraded! Remaining gold: {}", player.gold);
+    match shop.upgrade_player_weapon(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful!");
+            println!("After first upgrade: {:?}", player.weapon);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
     }
 
-    // Attempt to upgrade the armor
-    let upgrade_cost = 15;  // Define a cost for upgrading the armor
-    if let Err(e) = player.upgrade_armor(&shop, upgrade_cost) {
-        println!("Upgrade failed: {:?}", e);
-    } else {
-        println!("Armor upgraded! Remaining gold: {}", player.gold);
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_wpn_upgrade_cost(&player.weapon);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_weapon(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After second upgrade: {:?}", player.weapon);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
     }
 
-    // Attempt to upgrade the shield
-    let upgrade_cost = 10;  // Define a cost for upgrading the shield
-    if let Err(e) = player.upgrade_shield(&shop, upgrade_cost) {
-        println!("Upgrade failed: {:?}", e);
-    } else {
-        println!("Shield upgraded! Remaining gold: {}", player.gold);
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_wpn_upgrade_cost(&player.weapon);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_weapon(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After third upgrade: {:?}", player.weapon);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
     }
 
-    // Print updated player status
-    println!("Player's final gold: {}", player.gold);
-    // Print the updated equipment names and stats
-    println!("Weapon: {}", player.weapon.name());
-    println!("Armor: {}", player.armor.name());
-    println!("Shield: {}", player.shield.name());
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_wpn_upgrade_cost(&player.weapon);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_weapon(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After fourth upgrade: {:?}", player.weapon);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_shld_upgrade_cost(&player.shield);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_shield(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful!");
+            println!("After first upgrade: {:?}", player.shield);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_shld_upgrade_cost(&player.shield);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_shield(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After second upgrade: {:?}", player.shield);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_shld_upgrade_cost(&player.shield);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_shield(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After third upgrade: {:?}", player.shield);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_shld_upgrade_cost(&player.shield);
+    println!("\nNext upgrade cost: {}", cost);
+
+    match shop.upgrade_player_shield(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After fourth upgrade: {:?}", player.shield);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_amr_upgrade_cost(&player.armor);
+    println!("\nNext Armor upgrade cost: {}", cost);
+
+    match shop.upgrade_player_armor(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful!");
+            println!("After first upgrade: {:?}", player.armor);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_amr_upgrade_cost(&player.armor);
+    println!("\nNext Armor upgrade cost: {}", cost);
+
+    match shop.upgrade_player_armor(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After second upgrade: {:?}", player.weapon);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_amr_upgrade_cost(&player.armor);
+    println!("\nNext Armor upgrade cost: {}", cost);
+
+    match shop.upgrade_player_armor(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After third upgrade: {:?}", player.armor);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
+
+    // Test another upgrade to see if the scaling works
+    let cost = Shop::get_amr_upgrade_cost(&player.armor);
+    println!("\nNext Armor upgrade cost: {}", cost);
+
+    match shop.upgrade_player_armor(&mut player) {
+        Ok(_) => {
+            println!("Upgrade successful again!");
+            println!("After fourth upgrade: {:?}", player.armor);
+            println!("Gold remaining: {}", player.gold);
+        }
+        Err(e) => println!("Upgrade failed: {:?}", e),
+    }
 }

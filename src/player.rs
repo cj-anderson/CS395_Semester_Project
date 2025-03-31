@@ -1,5 +1,6 @@
-use crate::{shop::Shop, upgrade_error, armor::Armor, equipment::Equipment, shield::Shield, weapon::Weapon};
+use crate::{armor::Armor, shield::Shield, upgrade_error::UpgradeError, weapon::Weapon};
 
+#[derive(Debug)]
 pub struct Player {
     pub name: String,
     pub level: u32,
@@ -10,56 +11,55 @@ pub struct Player {
     pub def: u32,
     pub gold: u32,
 
-    // Equipment for the player, as an enum to handle all equipment types
-    pub weapon: Equipment,
-    pub shield: Equipment,
-    pub armor: Equipment,
+    pub weapon: Weapon,
+    pub shield: Shield,
+    pub armor: Armor,
 }
 
 impl Player {
-    pub fn new() -> Self {
+    pub fn new(nme: &str) -> Self {
         Player {
-            name: String::from("John Doe"),
-            level: 1u32,
-            exp: 0u32,
-            max_hp: 20u32,
-            hp: 20u32,
-            atk: 5u32,
-            def: 5u32,
-            gold: 100u32, // Starting gold
-            weapon: Equipment::Weapon(Weapon::new("Iron Sword", 10, 1)),
-            shield: Equipment::Shield(Shield::new("Wooden Shield", 3)),
-            armor: Equipment::Armor(Armor::new("Leather Armor", 5)),
+            name: String::from(nme),
+            level: 1,
+            exp: 0,
+            max_hp: 20,
+            hp: 20,
+            atk: 5,
+            def: 5,
+            gold: 100, // Starting gold for upgrades
+            weapon: Weapon::new("Iron Sword", 10, 1),
+            shield: Shield::new("Wooden Shield", 3),
+            armor: Armor::new("Cloth Armor", 5),
         }
     }
 
-    pub fn upgrade_weapon(&mut self, shop: &Shop, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
-        let mut player_gold = self.gold;
-        shop.upgrade_item(&mut self.weapon, &mut player_gold, upgrade_cost)?;
-
-        // Update the player's gold after the upgrade
-        self.gold = player_gold;
-
-        Ok(())
+    pub fn upgrade_weapon(&mut self, upgrade_cost: u32) -> Result<(), UpgradeError> {
+        match Weapon::upgrade(self.weapon.clone(), self, upgrade_cost) {
+            Ok(new_weapon) => {
+                self.weapon = new_weapon; // Store the upgraded weapon
+                Ok(())
+            }
+            Err(e) => Err(e), // Pass the error back
+        }
     }
 
-    pub fn upgrade_armor(&mut self, shop: &Shop, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
-        let mut player_gold = self.gold;
-        shop.upgrade_item(&mut self.armor, &mut player_gold, upgrade_cost)?;
-
-        // Update the player's gold after the upgrade
-        self.gold = player_gold;
-
-        Ok(())
+    pub fn upgrade_armor(&mut self, upgrade_cost: u32) -> Result<(), UpgradeError> {
+        match Armor::upgrade(self.armor.clone(), self, upgrade_cost) {
+            Ok(new_armor) => {
+                self.armor = new_armor; // Store the upgraded armor
+                Ok(())
+            }
+            Err(e) => Err(e), // Pass the error back
+        }
     }
 
-    pub fn upgrade_shield(&mut self, shop: &Shop, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
-        let mut player_gold = self.gold;
-        shop.upgrade_item(&mut self.shield, &mut player_gold, upgrade_cost)?;
-
-        // Update the player's gold after the upgrade
-        self.gold = player_gold;
-
-        Ok(())
+    pub fn upgrade_shield(&mut self, upgrade_cost: u32) -> Result<(), UpgradeError> {
+        match Shield::upgrade(self.shield.clone(), self, upgrade_cost) {
+            Ok(new_shield) => {
+                self.shield = new_shield; // Store the upgraded shield
+                Ok(())
+            }
+            Err(e) => Err(e), // Pass the error back
+        }
     }
 }

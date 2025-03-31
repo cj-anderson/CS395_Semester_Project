@@ -1,7 +1,6 @@
-use crate::{equipment::Equipment, upgrade_error::{self, UpgradeError}};
+use crate::{player::Player, upgrade_error::UpgradeError};
 
 #[derive(Debug, Clone)]
-
 pub struct Weapon {
     pub name: String,
     pub level: u32,
@@ -10,8 +9,8 @@ pub struct Weapon {
 }
 
 impl Weapon {
-    pub fn new(name: &str, damage: u32, hit_mod: u32) -> Self{
-        Weapon{
+    pub fn new(name: &str, damage: u32, hit_mod: u32) -> Self {
+        Weapon {
             name: name.to_string(),
             level: 1,
             damage,
@@ -19,45 +18,36 @@ impl Weapon {
         }
     }
 
-    pub fn upgrade(&mut self, player_gold: &mut u32, upgrade_cost: u32) -> Result<(), upgrade_error::UpgradeError> {
-        if self.level >= 5 {
-            return Err(UpgradeError::MaxLevelReached(self.name.clone()));
+    // Upgrade logic for Weapon
+    pub fn upgrade(w: Weapon, p: &mut Player, upgrade_cost: u32) -> Result<Weapon, UpgradeError> {
+        if w.level >= 5 {
+            return Err(UpgradeError::MaxLevelReached(w.name.clone()));
         }
-    
-        if *player_gold < upgrade_cost {
-            return Err(UpgradeError::NotEnoughGold(self.name.clone()));
+
+        if p.gold < upgrade_cost {
+            return Err(UpgradeError::NotEnoughGold(p.name.clone()));
         }
-    
-        // Deduct gold from player
-        *player_gold -= upgrade_cost;
-    
-        // Split the name at the first space to get base name and prefix
-        let name_parts: Vec<&str> = self.name.splitn(2, ' ').collect();
-        let binding = self.name.as_str();
-        let base_name = name_parts.last().unwrap_or(&binding); // Get the base name after the split
-    
-        // Generate new prefix based on level
-        let new_prefix = match self.level + 1 {
+
+        p.gold -= upgrade_cost;
+
+        // Extract base name safely
+        let (prefix, base_name) = w.name.split_once(' ').unwrap_or(("", &w.name));
+
+        let new_prefix = match w.level + 1 {
             2 => "Strengthened",
             3 => "Tempered",
             4 => "Enchanted",
             5 => "Legendary",
-            _ => "", // This should never happen
+            _ => prefix,  // Keep existing prefix if beyond level 5
         };
-    
-        // Create a new Weapon with the upgraded values
-        let upgraded_weapon = Weapon {
-            name: format!("{} {}", new_prefix, base_name), // Combine new prefix with the base name
-            level: self.level + 1, // Increase the level
-            damage: self.damage + 5, // Increase damage per upgrade
-            hit_mod: self.hit_mod + 1, // Increase hit modifier per upgrade
-        };
-    
-        // Return the upgraded weapon wrapped in a Box<dyn Equipment>
-        Ok(())
+
+
+        // Create upgraded weapon
+        Ok(Weapon {
+            name: format!("{} {}", new_prefix, base_name),
+            level: w.level + 1,
+            damage: w.damage + 5,
+            hit_mod: w.hit_mod + 1,
+        })
     }
-    
-
-
 }
-
