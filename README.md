@@ -82,3 +82,110 @@ What would you like to do?
 5. Save and Quit
 
 ```
+
+Each of these options have different results, which will briefly be detailed below before being fully explained in their own sections:
+1. Visit Shop - Upgrade the player's weapon, armor, and shield, provided they have enough gold.
+2. Rest - Recharge the player's healing potion uses to maximum.
+3. Move to Next Room - Journey further into the game, encountering monsters and beginning another round of combat.
+4. View Stats - Displays the player's statistics and equipment.
+5. Save and Quit - Update the player's save and backup, and then exit the program.
+
+# Visiting the Shop
+
+When visiting the shop, something similar to this will be displayed: 
+
+```
+Welcome to the shop!
+
+Current Equipment:
+Weapon: Strengthened Sword (Damage: 15, Hit Modifier: 2, Level: 2)
+Shield: Reinforced Shield (Defense: 8, Level: 2)
+Armor: Reinforced Armor (Defense: 10, Level: 2)
+
+Gold: 35
+
+Available Upgrades:
+1. Upgrade Weapon (Cost: 65 gold)
+2. Upgrade Shield (Cost: 55 gold)
+3. Upgrade Armor (Cost: 60 gold)
+4. Leave the shop
+
+```
+
+If a piece of the player's equipment is already at max level, a different message will be displayed, and further upgrades will be prohibited.
+
+Also, if the player does not have enough gold to purchase an upgrade, a message will be displayed and the player will not lose gold.
+
+# Resting and Recharging
+
+Upon choosing to rest, the player will regain all HP and uses of their healing potion. The following output will be displayed:
+
+```
+You rest and regain HP.
+Your healing potions have been recharged!
+
+Press Enter to return to the menu...
+
+```
+
+As explained, pressing Enter will return the player to the main menu.
+
+# Moving Forward in the Game
+
+When moving to the next room, you may encounter enemies. For example:
+
+```
+You encountered:
+Dragon Whelp (HP: 80/80)
+Orc (HP: 50/50)
+Dragon Whelp (HP: 80/80)
+
+Your HP: 35/35
+Potions left: 3
+Choose an action:
+1. Attack
+2. Defend
+3. Heal
+
+```
+
+Your options are as follows:
+1. Attack (Choose an enemy, and use your weapon to deal damage.)
+2. Defend (Raise your shield, and decrease damae for one turn.)
+3. Heal (Consume one use of your healing potion, and heal for an amount equal to ((.3 + (.01 * player level)) * player's max hp).)
+
+After you make a choice, all remaining enemies take their turns, either attacking or guarding.
+
+If you reach 0 HP, you lose the game, and it exits the program. Your last saved data is still saved, however, so if you'd like to pick up where you left off and try again, you can!
+
+Upon defeating all enemies, you gain EXP, gold, and could potentially level up, increasing your stats!
+
+Once combat is concluded, the player is returned to the main menu.
+
+# Viewing the Player's Stats
+
+Upon selecting this option, the player's stats will be shown. An example is given below.
+
+```
+--- Player Stats ---
+Name: Caleb
+Level: 4
+XP: 23/33
+HP: 35/35
+ATK: 8 | DEF: 8
+Gold: 35
+Weapon: Strengthened Sword (Level 2, Hit Modifier: 2, Damage: 15)
+Armor: Reinforced Armor (Level 2, Defense: 10)
+Shield: Reinforced Shield (Level 2, Defense: 8)
+Potion Uses: 3
+
+
+Press Enter to return to the menu...
+
+```
+
+As displayed, pressing Enter here will return the player to the menu.
+
+# Saving and Quitting
+
+Upon selecting this option, all player data will be serialized and stored in a "player_data.json" file. The player's data and the enemies' will also then be serialized and backed up into a "save_file.json" file. The program then exits.

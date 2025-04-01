@@ -296,7 +296,19 @@ fn visit_shop(player: &mut Player) {
 fn rest(player: &mut Player) {
     // Let the player rest and recover some health
     Player::clear_screen();
+    player.hp = player.max_hp;
+    println!("You rest and regain HP.");
     player.recharge_potion();
+
+     // Prompt for user input to continue
+     println!("\nPress Enter to return to the menu...");
+
+     // Wait for the player to press Enter
+     let mut input = String::new();
+     io::stdin().read_line(&mut input).expect("Failed to read line");
+     // Clear the terminal screen after the player presses Enter
+     print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+     io::stdout().flush().expect("Failed to flush stdout");
 }
 
 pub fn move_to_next_room(player: &mut Player, enemies: &mut Vec<Enemy>) {
