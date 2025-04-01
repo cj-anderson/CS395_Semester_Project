@@ -1,6 +1,6 @@
 use crate::{player::Player, upgrade_error::UpgradeError};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Shield {

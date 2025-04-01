@@ -1,6 +1,6 @@
 use crate::{armor::Armor, shield::Shield, upgrade_error::UpgradeError, weapon::Weapon};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use std::fs;
 use std::io::{self, Write};
 
@@ -37,7 +37,7 @@ impl Player {
             gold: 100, // Starting gold for upgrades
             weapon: Weapon::new("Iron Sword", 1, 10, 1),
             shield: Shield::new("Wooden Shield", 1, 3),
-            armor: Armor::new("Cloth Armor",1,  5),
+            armor: Armor::new("Cloth Armor", 1, 5),
             potion_uses: 3,
         }
     }
@@ -47,13 +47,17 @@ impl Player {
             eprintln!("Save file not found. Creating a new save file...");
             print!("Enter your character's name: ");
             io::stdout().flush().expect("Failed to flush stdout");
-            
+
             let mut name = String::new();
-            io::stdin().read_line(&mut name).expect("Failed to read input");
+            io::stdin()
+                .read_line(&mut name)
+                .expect("Failed to read input");
             let name = name.trim().to_string();
-            
+
             let default_player = Player::new(&name);
-            default_player.save_to_file(filename).expect("Failed to create default save file.");
+            default_player
+                .save_to_file(filename)
+                .expect("Failed to create default save file.");
             return default_player;
         }
 
@@ -70,37 +74,35 @@ impl Player {
         eprintln!("Corrupt save file detected. Creating a new one...");
         print!("Enter your character's name: ");
         io::stdout().flush().expect("Failed to flush stdout");
-        
+
         let mut name = String::new();
-        io::stdin().read_line(&mut name).expect("Failed to read input");
+        io::stdin()
+            .read_line(&mut name)
+            .expect("Failed to read input");
         let name = name.trim().to_string();
-        
+
         let default_player = Player::new(&name);
-        default_player.save_to_file(filename).expect("Failed to create default save file.");
+        default_player
+            .save_to_file(filename)
+            .expect("Failed to create default save file.");
         default_player
     }
 
-pub fn level_up(&mut self) {
-    while self.exp >= self.exp_to_lv_up {
-        self.exp -= self.exp_to_lv_up;
-        self.level += 1;
-        self.max_hp += 5;
-        self.hp = self.max_hp;
-        self.atk += 1;
-        self.def += 1;
-        self.exp_to_lv_up = (self.exp_to_lv_up as f32 * 1.5).floor() as u32;
-        println!("Congratulations! You reached Level {}. Next level at {} XP.", self.level, self.exp_to_lv_up);
+    pub fn level_up(&mut self) {
+        while self.exp >= self.exp_to_lv_up {
+            self.exp -= self.exp_to_lv_up;
+            self.level += 1;
+            self.max_hp += 5;
+            self.hp = self.max_hp;
+            self.atk += 1;
+            self.def += 1;
+            self.exp_to_lv_up = (self.exp_to_lv_up as f32 * 1.5).floor() as u32;
+            println!(
+                "Congratulations! You reached Level {}. Next level at {} XP.",
+                self.level, self.exp_to_lv_up
+            );
+        }
     }
-
-    println!("\nPress Enter to return to the menu...");
-
-    // Wait for the player to press Enter
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).expect("Failed to read line");
-    // Clear the terminal screen after the player presses Enter
-    print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
-    io::stdout().flush().expect("Failed to flush stdout");
-}
 
     pub fn upgrade_weapon(&mut self, upgrade_cost: u32) -> Result<(), UpgradeError> {
         match Weapon::upgrade(self.weapon.clone(), self, upgrade_cost) {
@@ -121,9 +123,18 @@ pub fn level_up(&mut self) {
         println!("HP: {}/{}", self.hp, self.max_hp);
         println!("ATK: {} | DEF: {}", self.atk, self.def);
         println!("Gold: {}", self.gold);
-        println!("Weapon: {} (Level {}, Hit Modifier: {}, Damage: {})", self.weapon.name, self.weapon.level, self.weapon.hit_mod, self.weapon.damage);
-        println!("Armor: {} (Level {}, Defense: {})", self.armor.name, self.armor.level, self.armor.defense);
-        println!("Shield: {} (Level {}, Defense: {})", self.shield.name, self.shield.level, self.shield.defense);
+        println!(
+            "Weapon: {} (Level {}, Hit Modifier: {}, Damage: {})",
+            self.weapon.name, self.weapon.level, self.weapon.hit_mod, self.weapon.damage
+        );
+        println!(
+            "Armor: {} (Level {}, Defense: {})",
+            self.armor.name, self.armor.level, self.armor.defense
+        );
+        println!(
+            "Shield: {} (Level {}, Defense: {})",
+            self.shield.name, self.shield.level, self.shield.defense
+        );
         println!("Potion Uses: {}\n", self.potion_uses);
 
         // Prompt for user input to continue
@@ -131,12 +142,13 @@ pub fn level_up(&mut self) {
 
         // Wait for the player to press Enter
         let mut input = String::new();
-        io::stdin().read_line(&mut input).expect("Failed to read line");
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
         // Clear the terminal screen after the player presses Enter
         print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
         io::stdout().flush().expect("Failed to flush stdout");
     }
-
 
     pub fn clear_screen() {
         print!("{}[2J{}[1;1H", 27 as char, 27 as char);
@@ -163,15 +175,15 @@ pub fn level_up(&mut self) {
         }
     }
 
-     /// Save the player data to a JSON file
-     pub fn save_to_file(&self, filename: &str) -> io::Result<()> {
+    // Save the player data to a JSON file
+    pub fn save_to_file(&self, filename: &str) -> io::Result<()> {
         let json = serde_json::to_string_pretty(self).expect("Failed to serialize");
         let mut file = fs::File::create(filename)?;
         file.write_all(json.as_bytes())?;
         Ok(())
     }
 
-    /// Load player data from a JSON file
+    // Load player data from a JSON file
     pub fn load_from_file(filename: &str) -> io::Result<Self> {
         let json = fs::read_to_string(filename)?;
         let player: Player = serde_json::from_str(&json).expect("Failed to deserialize");

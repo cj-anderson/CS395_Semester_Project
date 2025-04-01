@@ -1,4 +1,6 @@
-use crate::{armor::Armor, player::Player, shield::Shield, upgrade_error::UpgradeError, weapon::Weapon};
+use crate::{
+    armor::Armor, player::Player, shield::Shield, upgrade_error::UpgradeError, weapon::Weapon,
+};
 
 pub struct Shop;
 
@@ -9,12 +11,10 @@ impl Shop {
     }
 
     pub fn get_amr_upgrade_cost(armor: &Armor) -> u32 {
-        // Example scaling cost formula: base cost * level multiplier
         20 + (armor.level * 10)
     }
 
     pub fn get_shld_upgrade_cost(shield: &Shield) -> u32 {
-        // Example scaling cost formula: base cost * level multiplier
         20 + (shield.level * 10)
     }
 

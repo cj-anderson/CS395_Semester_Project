@@ -1,6 +1,6 @@
 use crate::{player::Player, upgrade_error::UpgradeError};
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Weapon {
@@ -40,9 +40,8 @@ impl Weapon {
             3 => "Tempered",
             4 => "Enchanted",
             5 => "Legendary",
-            _ => prefix,  // Keep existing prefix if beyond level 5
+            _ => prefix, // Keep existing prefix if beyond level 5
         };
-
 
         // Create upgraded weapon
         Ok(Weapon {
