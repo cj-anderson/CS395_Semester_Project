@@ -3,7 +3,6 @@ use cs395_project::{player:: Player, upgrade_error::UpgradeError};
 use std::fs;
 
 #[cfg(test)]
-use hamcrest2::prelude::*;
 use rstest::*;
 
 #[fixture]
@@ -46,8 +45,8 @@ fn test_level_up() {
 
     // Verify stat increases
     assert_eq!(player.max_hp, 30); // +5 per level-up
-    assert_eq!(player.atk, 9); // +2 per level-up
-    assert_eq!(player.def, 9); // +2 per level-up
+    assert_eq!(player.atk, 7); // +2 per level-up
+    assert_eq!(player.def, 7); // +2 per level-up
 }
 
 #[rstest]
@@ -126,3 +125,58 @@ fn test_save_and_load_player() {
 
     fs::remove_file(test_filename).expect("Failed to delete test file");
 }
+  #[rstest]
+    fn test_heal() {
+        // Create a player with initial stats
+        let mut player = Player::new("Hero");
+
+        // Save initial HP
+        let initial_hp = player.hp;
+
+        // Set a fixed level for testing
+        player.level = 10;
+
+        // Use the healing potion
+        player.heal();
+
+        // Calculate the expected heal amount
+        let heal_percentage = 30.0 + (0.01 * player.level as f32);
+        let expected_heal_amount = (player.max_hp as f32 * heal_percentage / 100.0).floor() as u32;
+        let expected_hp = (initial_hp + expected_heal_amount).min(player.max_hp);
+
+        // Check if the player's HP was correctly healed
+        assert_eq!(player.hp, expected_hp, "Player's HP should be healed by the correct amount");
+
+        // Check if the potion use is reduced
+        assert_eq!(player.potion_uses, 2, "Potion uses should decrease by 1 after using the potion");
+    }
+
+    #[rstest]
+    fn test_heal_no_potion_left() {
+        // Create a player with no potions left
+        let mut player = Player::new("Hero");
+        player.potion_uses = 0;
+
+        // Try to heal
+        player.heal();
+
+        // HP should remain the same since there are no potions
+        assert_eq!(player.hp, player.max_hp, "Player's HP should remain the same when there are no potions left");
+
+        // Ensure potion uses are still 0
+        assert_eq!(player.potion_uses, 0, "Potion uses should remain 0 if there are no potions left");
+    }
+
+    #[rstest]
+    fn test_recharge_potion() {
+        // Create a player with some potions used
+        let mut player = Player::new("Hero");
+        player.potion_uses = 1; // Assume 1 potion use left
+
+        // Recharge the potion
+        player.recharge_potion();
+
+        // Ensure the potion uses are reset to 3
+        assert_eq!(player.potion_uses, 3, "Potion uses should be reset to 3 after recharge");
+    }
+

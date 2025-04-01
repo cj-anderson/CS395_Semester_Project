@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Goblin",
+        "max_hp": 30,
+        "hp": 30,
+        "atk": 5,
+        "def": 2,
+        "exp_given": 10,
+        "cr": 1.0
+    },
+    {
+        "name": "Orc",
+        "max_hp": 50,
+        "hp": 50,
+        "atk": 8,
+        "def": 4,
+        "exp_given": 20,
+        "cr": 1.5
+    },
+    {
+        "name": "Skeleton Warrior",
+        "max_hp": 40,
+        "hp": 40,
+        "atk": 6,
+        "def": 3,
+        "exp_given": 15,
+        "cr": 1.2
+    },
+    {
+        "name": "Dark Mage",
+        "max_hp": 35,
+        "hp": 35,
+        "atk": 10,
+        "def": 1,
+        "exp_given": 25,
+        "cr": 2.0
+    },
+    {
+        "name": "Dragon Whelp",
+        "max_hp": 80,
+        "hp": 80,
+        "atk": 15,
+        "def": 6,
+        "exp_given": 50,
+        "cr": 3.5
+    }
+]

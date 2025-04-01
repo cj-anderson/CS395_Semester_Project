@@ -1,8 +1,6 @@
 use crate::{player::Player, upgrade_error::UpgradeError};
 
 use serde::{Serialize, Deserialize};
-use std::fs;
-use std::io::{self, Write};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Weapon {
@@ -13,7 +11,7 @@ pub struct Weapon {
 }
 
 impl Weapon {
-    pub fn new(name: &str, damage: u32, hit_mod: u32) -> Self {
+    pub fn new(name: &str, _lvl: u32, damage: u32, hit_mod: u32) -> Self {
         Weapon {
             name: name.to_string(),
             level: 1,

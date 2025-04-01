@@ -7,7 +7,7 @@ pub mod entity;
 pub mod player;
 pub mod enemy;
 
-pub mod equipment;
+pub mod game;
 pub mod weapon;
 pub mod shield;
 pub mod armor;
