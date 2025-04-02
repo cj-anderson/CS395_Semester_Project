@@ -1,6 +1,6 @@
 [package]
 name = "cs395_project"
-version = "0.2.5"
+version = "0.3.4"
 authors = ["Caleb Anderson <cande045@odu.edu>"]
 edition = "2021"
 
