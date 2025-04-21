@@ -194,3 +194,9 @@ As displayed, pressing Enter here will return the player to the menu.
 # Saving and Quitting:
 
 Upon selecting this option, all player data will be serialized and stored in a "player_data.json" file. The player's data and the enemies' will also then be serialized and backed up into a "save_file.json" file. The program then exits.
+
+# Conclusion and Observations:
+
+Over the course of the semester, I made a variety of changes. For instance, one big change in the code of this project was how I implemented (or rather, removed implementation of) the Entity trait. Initially, the Player and Enemy structs were going to be based off of the Entity trait, and add custom methods and data members of their own. However, I later completely scrapped the implementation of this trait within the Player class, and it's largely unused in the Enemy class. Another change I made involved foreign function interface, or the lack thereof. I wanted to include Java initially (as I knew a lot more about Java than I did Rust when initially beginning this project. However, I later decided to complete this assignment 100% in Rust, and it helped me to learn the language instead of depending on a language i knew already. 
+
+Given a month, I would try to find a way to add a second (or more) player class allowing for more equipment and items. I would also like to add checkpoints of some variety (i.e. specific "boss" enemies after x amount of rooms), and also encounters that don't always involve combat. I learned that relying on what I know isnt always going to work, and that sometimes other people might have ideas that benefit my project in some way.
